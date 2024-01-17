@@ -2,12 +2,11 @@
 import React, { useEffect, useState } from "react";
 import "./CreateTicket.css"; // Make sure to create this CSS file
 import Loading from "../Loading/Loading";
-import {createTicket} from '../../redux/action/ticketAction';
-import { useDispatch,useSelector } from "react-redux";
+import { createTicket } from "../../redux/action/ticketAction";
+import { useDispatch, useSelector } from "react-redux";
 import Toast from "../Toast/Toast";
 
 import Dialog from "../Dioluge/Dioluge";
-
 
 const CreateTickets = () => {
   const [topic, setTopic] = useState("");
@@ -15,12 +14,12 @@ const CreateTickets = () => {
   const [type, setType] = useState("");
   const [severity, setSeverity] = useState("");
   const [showToast, setShowToast] = useState(false); // State to control the visibility of the toast
-  const [toastMessage, setToastMessage] = useState(''); // State to set the toast message
+  const [toastMessage, setToastMessage] = useState(""); // State to set the toast message
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
-
-  const ticket = useSelector(state => state.ticket);
+ 
+  const ticket = useSelector((state) => state.ticket);
   const { loading, ticketInfo, error } = ticket;
 
   const validateForm = () => {
@@ -29,20 +28,23 @@ const CreateTickets = () => {
     if (!type.trim()) return "Type is required.";
     if (!severity.trim()) return "Severity is required.";
     return "";
-  }
-
-
+  };
 
   useEffect(() => {
-
     if (ticketInfo) {
-      setToastMessage('Ticket created successfully!');
+      setToastMessage("Ticket created successfully!");
       setShowToast(true);
 
       setIsDialogOpen(true); // Open the dialog
-    
-        
+      // Clear the form fields
+      setTopic("");
+      setDescription("");
+      setType("");
+      setSeverity("");
+      setTimeout(() =>
       
+      setIsDialogOpen(false), 4000);
+     
 
     } else if (error) {
       setToastMessage(error);
@@ -61,21 +63,13 @@ const CreateTickets = () => {
       setTimeout(() => setShowToast(true), 0);
     }
     dispatch(createTicket(topic, description, type, severity));
-
-   
-
-
   };
-
- 
-
-
 
   return (
     <div className="container">
       <div className="form-container">
         <form id="contact-form" onSubmit={submitHandler}>
-        {loading && <Loading isLoading={loading}/>}
+          {loading && <Loading isLoading={loading} />}
           <h2>Create Ticket</h2>
           <div className="form-group">
             <label>Name:</label>
@@ -117,26 +111,36 @@ const CreateTickets = () => {
           </div>
 
           <button type="submit">Create</button>
-
-          
         </form>
         {ticketInfo && <Toast message={toastMessage} type="success" />}
       </div>
       {showToast && <Toast message={toastMessage} type="error" />}
       <Dialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-  <h3>Ticket Created Successfully</h3>
-  {ticketInfo && (
-    <>
-      <p><strong>ID:</strong> {ticketInfo.ticket._id}</p>
-      <p><strong>Topic:</strong> {ticketInfo.ticket.topic}</p>
-      <p><strong>Description:</strong> {ticketInfo.ticket.description}</p>
-      <p><strong>Severity:</strong> {ticketInfo.ticket.severity}</p>
-      <p><strong>Type:</strong> {ticketInfo.ticket.type}</p>
-   
-    </>
-  )}
-</Dialog>
-
+        <h3>Ticket Created Successfully</h3>
+        {ticketInfo && (
+          <>
+            <p>
+              <strong>TicketId:</strong> {ticketInfo.ticket._id}
+            </p>
+            <p>
+              <strong>AssignedTo:</strong>
+              {ticketInfo.ticket.assignedTo}
+            </p>
+            <p>
+              <strong>Topic:</strong> {ticketInfo.ticket.topic}
+            </p>
+            <p>
+              <strong>Description:</strong> {ticketInfo.ticket.description}
+            </p>
+            <p>
+              <strong>Severity:</strong> {ticketInfo.ticket.severity}
+            </p>
+            <p>
+              <strong>Type:</strong> {ticketInfo.ticket.type}
+            </p>
+          </>
+        )}
+      </Dialog>
     </div>
   );
 };
