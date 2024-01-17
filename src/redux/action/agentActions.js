@@ -18,10 +18,13 @@ export const createAgent = (name,email,phone,description) => async (dispatch) =>
         
         )
 
+       
+
         
 
         dispatch({
             type: CREATE_AGENT_SUCCESS,
+
             payload: data,
         });
     } catch (error) {

@@ -5,22 +5,23 @@ import './supportAgent.css'; // Make sure to create this CSS file
 import { useDispatch,useSelector } from 'react-redux';
 import Loading from '../Loading/Loading';
 import Toast from '../Toast/Toast';
-import { useNavigate } from 'react-router-dom';
 
+import Dialog from '../Dioluge/Dioluge';
 const SupportAgent = () => {
-  const navigate = useNavigate();
+ 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
   const [showToast, setShowToast] = useState(false); // State to control the visibility of the toast
   const [toastMessage, setToastMessage] = useState(''); // State to set the toast message
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
 
 
   const agent = useSelector(state => state.agent);
-  const { loading, success, error } = agent;
+  const { loading, agentInfo, error } = agent;
   const validateForm = () => {
     if (!name.trim()) return "Name is required.";
     if (!email.trim()) return "Email is required.";
@@ -29,18 +30,19 @@ const SupportAgent = () => {
     return "";
   };
   useEffect(() => {
-    if (success) {
+
+    
+    if (agentInfo) {
       setToastMessage('Agent created successfully!');
       setShowToast(true);
-      setTimeout(() => {
-        navigate('/');
-      }, 3000); // Navigate after 3 seconds
+      setIsDialogOpen(true); 
+     
     } else if (error) {
       setToastMessage(error);
       setShowToast(false);
       setTimeout(() => setShowToast(true), 0);
     }
-  }, [error, success, navigate]);
+  }, [error, agentInfo]);
 
 
 
@@ -84,11 +86,23 @@ const SupportAgent = () => {
       </div>
       <button type="submit">Create</button>
     </form>
-    {success && <Toast message={toastMessage} type="success" />}
+   
   </div>
 
   {showToast && <Toast message={toastMessage} type="error" />}
-
+  <Dialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+  <h3>Ticket Created Successfully</h3>
+  {agentInfo && (
+    <>
+      <p><strong>Name:</strong> {agentInfo.data.name}</p>
+      <p><strong>Email:</strong> {agentInfo.data.email}</p>
+      <p><strong>Active:</strong> {agentInfo.data.active}</p>
+      <p><strong>Description:</strong> {agentInfo.data.description}</p>
+    
+     
+    </>
+  )}
+</Dialog>  
 
   </div>
     );
