@@ -1,6 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import './Toast.css'; // Importing the CSS for styling
 
+// eslint-disable-next-line react/prop-types
 const Toast = ({ message, type }) => {
   const [visible, setVisible] = useState(false);
 
