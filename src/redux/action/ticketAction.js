@@ -4,6 +4,9 @@ import {
   CREATE_TICKET_REQUEST,
   CREATE_TICKET_FAILURE,
   CREATE_TICKET_SUCCESS,
+  GET_TICKETS_REQUEST,
+  GET_TICKETS_SUCCESS,
+  GET_TICKETS_FAIL,
 } from "../constants/ticketConstants";
 
 export const createTicket =
@@ -29,6 +32,28 @@ export const createTicket =
       dispatch({
         type: CREATE_TICKET_FAILURE,
         payload: error.response.data.message,
+      });
+    }
+  };
+
+
+  export const getTickets = () => async (dispatch) => {
+    try {
+      dispatch({ type: GET_TICKETS_REQUEST });
+  
+      const { data } = await axios.get('http://localhost:8000/api/support-tickets');
+  
+      dispatch({
+        type: GET_TICKETS_SUCCESS,
+        payload: data,
+      });
+  
+    } catch (error) {
+      dispatch({
+        type: GET_TICKETS_FAIL,
+        payload: error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
       });
     }
   };

@@ -4,6 +4,9 @@ import {
   CREATE_TICKET_REQUEST,
   CREATE_TICKET_FAILURE,
   CREATE_TICKET_SUCCESS,
+  GET_TICKETS_REQUEST,
+  GET_TICKETS_SUCCESS,
+  GET_TICKETS_FAIL,
 } from "../constants/ticketConstants";
 
 export const ticketReducer = (state = {}, action) => {
@@ -18,3 +21,17 @@ export const ticketReducer = (state = {}, action) => {
       return state;
   }
 };
+
+
+export const ticketListReducer = (state = { tickets: [] }, action) => {
+    switch (action.type) {
+      case GET_TICKETS_REQUEST:
+        return { loading: true, tickets: [] };
+      case GET_TICKETS_SUCCESS:
+        return { loading: false, tickets: action.payload.tickets };
+      case GET_TICKETS_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
