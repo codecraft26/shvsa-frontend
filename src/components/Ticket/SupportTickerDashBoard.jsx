@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTickets } from "../../redux/action/ticketAction";
+import { getAgents } from "../../redux/action/agentActions";
 import "./SupportTickerDashBoard.css";
 import ReactPaginate from "react-paginate";
 import Loading from "../Loading/Loading";
@@ -10,14 +11,18 @@ const SupportTicket = () => {
   const [sortOrder, setSortOrder] = useState(""); // State to track the sorting order
   const [severityFilter, setSeverityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [assignedToFilter, setAssignedToFilter] = useState("");
+  const [agentNames, setAgentNames] = useState([]);
+  const [agentFilter, setAgentFilter] = useState("");
 
-  const [typeFilter,setTypeFilter]=useState("")
+  const [typeFilter, setTypeFilter] = useState("");
   const dispatch = useDispatch();
 
   const { loading, error, tickets, pagination } = useSelector(
     (state) => state.ticketList
   );
+
+  const { agents } = useSelector((state) => state.agentList);
+
   const totalPages = Math.ceil(
     pagination.totalCount / pagination.resultPerPage
   );
@@ -26,16 +31,24 @@ const SupportTicket = () => {
   const isLastPage = currentPage === totalPages;
 
   useEffect(() => {
+    if (agents && agents.agentNames) {
+      setAgentNames(agents.agentNames);
+    }
+
     dispatch(
       getTickets({
         page: currentPage,
         sort: sortOrder,
         severity: severityFilter,
         status: statusFilter,
-        type:typeFilter
-      })
+        type: typeFilter,
+        assignedTo: agentFilter,
+      }),
+      dispatch(getAgents())
     );
-  }, [dispatch, currentPage, sortOrder, severityFilter,statusFilter,typeFilter]);
+
+   
+  }, [dispatch, currentPage, sortOrder, severityFilter, statusFilter, typeFilter, agentFilter, ]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -59,13 +72,17 @@ const SupportTicket = () => {
     setCurrentPage(1); // Reset to the first page when the filter changes
   };
 
-  const handleStatusChange=(event)=>{
+  const handleStatusChange = (event) => {
     setStatusFilter(event.target.value);
     setCurrentPage(1);
-  }
+  };
 
-  const handleTypeChange=(event)=>{
+  const handleTypeChange = (event) => {
     setTypeFilter(event.target.value);
+    setCurrentPage(1);
+  };
+  const handleAssignedchange=(event)=>{
+    setAgentFilter(event.target.value);
     setCurrentPage(1);
   }
 
@@ -86,14 +103,26 @@ const SupportTicket = () => {
                 <th>ID</th>
                 <th>Topic</th>
                 <th>Description</th>
-                <th>Assigned To</th>
+                <th onClick={handleAssignedchange}>
+                  Assigned 
+                  <div>
+                    <select
+                      value={agentFilter}
+                      onChange={handleAssignedchange}
+                    >
+                      <option value="">All</option>
+                      {agentNames.map((agent, index) => (
+                        <option key={index} value={agent}>
+                          {agent}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </th>
                 <th onClick={() => handleStatusChange}>
                   Status
                   <div>
-                    <select
-                      value={statusFilter}
-                      onChange={handleStatusChange}
-                    >
+                    <select value={statusFilter} onChange={handleStatusChange}>
                       <option value="">All</option>
                       <option value="Assigned">Assigned</option>
                       <option value="New">New</option>
@@ -119,22 +148,16 @@ const SupportTicket = () => {
                   Date Created {renderSortArrow()}
                 </th>
 
-                <th onClick={()=>handleTypeChange("")}>
+                <th onClick={() => handleTypeChange("")}>
                   Type{" "}
                   <div>
-                    <select
-                      value={typeFilter}
-                      onChange={handleTypeChange}
-                    >
+                    <select value={typeFilter} onChange={handleTypeChange}>
                       <option value="">All </option>
                       <option value="ITSG">ITSG</option>
                       <option value="HR">HR</option>
                       <option value="HDT">HDT</option>
                     </select>
                   </div>
-
-
-
                 </th>
               </tr>
             </thead>
