@@ -9,7 +9,7 @@ const SupportTicket = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState(""); // State to track the sorting order
   const [severityFilter, setSeverityFilter] = useState("");
-
+  const [statusFilter, setStatusFilter] = useState("");
   const dispatch = useDispatch();
 
   const { loading, error, tickets, pagination } = useSelector(
@@ -28,9 +28,10 @@ const SupportTicket = () => {
         page: currentPage,
         sort: sortOrder,
         severity: severityFilter,
+        status: statusFilter,
       })
     );
-  }, [dispatch, currentPage, sortOrder, severityFilter]);
+  }, [dispatch, currentPage, sortOrder, severityFilter,statusFilter]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -54,75 +55,93 @@ const SupportTicket = () => {
     setCurrentPage(1); // Reset to the first page when the filter changes
   };
 
+  const handleStatusChange=(event)=>{
+    setStatusFilter(event.target.value);
+    setCurrentPage(1);
+  }
+
   return (
     <div className="table-container">
-     
-
       {loading ? (
-     <div className="loading-container">
-     <Loading isLoading={loading} />
-   </div>
+        <div className="loading-container">
+          <Loading isLoading={loading} />
+        </div>
       ) : error ? (
         <div>Error: {error}</div>
       ) : (
-
         <div>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Topic</th>
-              <th>Description</th>
-              <th>Assigned To</th>
-              <th>Status</th>
-              <th onClick={() => handleSeverityChange("")}>Severity <div>
-        <select value={severityFilter} onChange={handleSeverityChange}>
-          <option value="">All Severities</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div></th>
-              <th onClick={toggleSortOrder}>
-                Date Created {renderSortArrow()}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {tickets.map((ticket) => (
-              <tr key={ticket._id}>
-                <td data-label="ID">{ticket._id}</td>
-                <td data-label="Topic">{ticket.topic}</td>
-                <td data-label="Description">{ticket.description}</td>
-                <td data-label="Assigned To">{ticket.assignedTo}</td>
-                <td data-label="Status">{ticket.status}</td>
-                <td data-label="Severity">{ticket.severity}</td>
-                <td data-label="Date Created">
-                  {new Date(ticket.dateCreated).toLocaleString()}
-                </td>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Topic</th>
+                <th>Description</th>
+                <th>Assigned To</th>
+                <th onClick={() => handleStatusChange}>
+                  Status
+                  <div>
+                    <select
+                      value={statusFilter}
+                      onChange={handleStatusChange}
+                    >
+                      <option value="">All</option>
+                      <option value="Assigned">Assigned</option>
+                      <option value="New">New</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+                  </div>
+                </th>
+                <th onClick={() => handleSeverityChange("")}>
+                  Severity{" "}
+                  <div>
+                    <select
+                      value={severityFilter}
+                      onChange={handleSeverityChange}
+                    >
+                      <option value="">All Severities</option>
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+                </th>
+                <th onClick={toggleSortOrder}>
+                  Date Created {renderSortArrow()}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <ReactPaginate
-  previousLabel={"previous"}
-  nextLabel={"next"}
-  breakLabel={"..."}
-  pageCount={totalPages}
-  marginPagesDisplayed={2}
-  pageRangeDisplayed={5}
-  onPageChange={(data) => handlePageChange(data.selected + 1)}
-  containerClassName={"pagination"}
-  activeClassName={"active"}
-  previousClassName={isFirstPage ? "hide" : ""}
-  nextClassName={isLastPage ? "hide" : ""}
-  forcePage={currentPage - 1} // Subtract 1 because ReactPaginate is zero-based
-/>
+            </thead>
+            <tbody>
+              {tickets.map((ticket) => (
+                <tr key={ticket._id}>
+                  <td data-label="ID">{ticket._id}</td>
+                  <td data-label="Topic">{ticket.topic}</td>
+                  <td data-label="Description">{ticket.description}</td>
+                  <td data-label="Assigned To">{ticket.assignedTo}</td>
+                  <td data-label="Status">{ticket.status}</td>
+                  <td data-label="Severity">{ticket.severity}</td>
+                  <td data-label="Date Created">
+                    {new Date(ticket.dateCreated).toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={(data) => handlePageChange(data.selected + 1)}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+            previousClassName={isFirstPage ? "hide" : ""}
+            nextClassName={isLastPage ? "hide" : ""}
+            forcePage={currentPage - 1} // Subtract 1 because ReactPaginate is zero-based
+          />
         </div>
       )}
-
-     
-    
     </div>
   );
 };
