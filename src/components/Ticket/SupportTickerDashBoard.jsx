@@ -24,7 +24,7 @@ const SupportTicket = () => {
   const { agents } = useSelector((state) => state.agentList);
 
   const totalPages = Math.ceil(
-    pagination.totalCount / pagination.resultPerPage
+    pagination.filteredCount / pagination.resultPerPage
   );
 
   const isFirstPage = currentPage === 1;

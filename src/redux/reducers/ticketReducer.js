@@ -35,7 +35,7 @@ export const ticketListReducer = (state = { tickets: [], pagination: {} }, actio
           filteredCount: action.payload.filteredcount,
           resultPerPage: action.payload.resultPerPage,
           page: action.payload.page,
-          totalCount: action.payload.TotalCount
+          
         }
       };
     case GET_TICKETS_FAIL:
