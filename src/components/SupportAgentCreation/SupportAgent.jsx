@@ -63,7 +63,9 @@ const SupportAgent = () => {
     <div className="container">
       <div className="form-container">
         <form id="contact-form" onSubmit={submitHandler}>
-          {loading && <Loading isLoading={loading} />}
+        {loading &&  <div className="loading-wrapper">
+    <Loading isLoading={loading} />
+  </div>}
           <h2>Create Support Agent</h2>
           <div className="form-group">
             <label>Name:</label>
