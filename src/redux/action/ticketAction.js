@@ -17,7 +17,7 @@ export const createTicket =
       const config = { headers: { "Content-Type": "application/json" } };
 
       const { data } = await axios.post(
-        "http://localhost:8000/api/support-tickets",
+        "https://shvsa-backend-assigment.onrender.com/api/support-tickets",
         {topic,description,type,severity },
         config
       );
@@ -41,7 +41,7 @@ export const createTicket =
     try {
       dispatch({ type: GET_TICKETS_REQUEST });
   
-      const { data } = await axios.get(`http://localhost:8000/api/support-tickets`, {
+      const { data } = await axios.get(`https://shvsa-backend-assigment.onrender.com/api/support-tickets`, {
         params: { page, status, type, severity, sort,assignedTo }
       });
   

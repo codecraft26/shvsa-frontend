@@ -13,7 +13,7 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/creation" activeClassName="active-link">
+          <Link to="/creation"  activeClassName="active-link">
             Agent Creation
           </Link>
         </li>

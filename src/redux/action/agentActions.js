@@ -17,7 +17,7 @@ export const createAgent = (name,email,phone,description) => async (dispatch) =>
 
 
         // Add your API call logic here, e.g., using fetch or axios
-        const {data}=await axios.post('http://localhost:8000/api/support-agents',
+        const {data}=await axios.post('https://shvsa-backend-assigment.onrender.com/api/support-agents',
         {name,email,phone,description},
         config
         
@@ -45,7 +45,7 @@ export const getAgents =()=>{
     return async (dispatch)=>{
         try {
             dispatch({type:GET_AGENT_REQUEST});
-            const {data}=await axios.get('http://localhost:8000/api/support-agents');
+            const {data}=await axios.get('https://shvsa-backend-assigment.onrender.com/api/support-agents');
             dispatch({
                 type:GET_AGENT_SUCCESS,
                 payload:data
