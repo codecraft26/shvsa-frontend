@@ -23,15 +23,24 @@ export const ticketReducer = (state = {}, action) => {
 };
 
 
-export const ticketListReducer = (state = { tickets: [] }, action) => {
-    switch (action.type) {
-      case GET_TICKETS_REQUEST:
-        return { loading: true, tickets: [] };
-      case GET_TICKETS_SUCCESS:
-        return { loading: false, tickets: action.payload.tickets };
-      case GET_TICKETS_FAIL:
-        return { loading: false, error: action.payload };
-      default:
-        return state;
-    }
-  };
+export const ticketListReducer = (state = { tickets: [], pagination: {} }, action) => {
+  switch (action.type) {
+    case GET_TICKETS_REQUEST:
+      return { ...state, loading: true };
+    case GET_TICKETS_SUCCESS:
+      return {
+        loading: false,
+        tickets: action.payload.tickets,
+        pagination: {
+          filteredCount: action.payload.filteredcount,
+          resultPerPage: action.payload.resultPerPage,
+          page: action.payload.page,
+          totalCount: action.payload.TotalCount
+        }
+      };
+    case GET_TICKETS_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

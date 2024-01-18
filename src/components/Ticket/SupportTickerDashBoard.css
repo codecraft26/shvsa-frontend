@@ -1,5 +1,5 @@
 .table-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     overflow-x: auto;
   }
@@ -31,7 +31,67 @@
     background-color: #f9f9f9;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
+
+  /* Pagination container styles */
+.pagination {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    padding: 0;
+    margin: 20px 0;
+  }
+  .pagination .hide {
+    display: none;
+  }
+  /* Pagination item styles */
+  .pagination li {
+    margin: 0 5px;
+  }
   
+  /* Pagination link styles */
+  .pagination li a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #696565;
+    color: #a39898;
+    cursor: pointer;
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust the height as needed */
+  }
+  
+  /* Active page styles */
+  .pagination li.active a {
+    background-color: #c2a7a7;
+    color: white;
+    border-color: #ddd7d7;
+  }
+  
+  /* Hover styles */
+  .pagination li a:hover {
+    background-color: #a5ccf7;
+    color: white;
+  }
+  
+  /* Previous and Next button styles */
+  .pagination li.previous a,
+  .pagination li.next a {
+    font-weight: bold;
+  }
+  
+  /* Break label styles */
+  .pagination li.break a {
+    cursor: default;
+  }
+  
+  th.sortable {
+    cursor: pointer;
+    user-select: none;
+  }
   /* Responsive */
   @media screen and (max-width: 600px) {
     table thead {
@@ -60,4 +120,5 @@
       text-align: left;
     }
   }
-  
+
+

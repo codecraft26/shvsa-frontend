@@ -37,11 +37,14 @@ export const createTicket =
   };
 
 
-  export const getTickets = () => async (dispatch) => {
+  export const getTickets = ( {page, status, type, severity, sort ,assignedTo} ) => async (dispatch) => {
     try {
       dispatch({ type: GET_TICKETS_REQUEST });
   
-      const { data } = await axios.get('http://localhost:8000/api/support-tickets');
+      const { data } = await axios.get(`http://localhost:8000/api/support-tickets`, {
+        params: { page, status, type, severity, sort,assignedTo }
+      });
+  
   
       dispatch({
         type: GET_TICKETS_SUCCESS,
