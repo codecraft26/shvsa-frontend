@@ -1,4 +1,4 @@
-# Support Ticket Entry System Client (React)
+# Support Ticket Entry System Client (React and Redux(State Management Library))
 
 The goal of this coding assignment is to design and implement a Support Ticket Entry System using the MERN (MongoDB, Express.js, React.js, Node.js) stack.Create Ticket and Ticket assign to Agents in Roud robin.
 This Client code is hosted on vercel.
