@@ -10,6 +10,9 @@ const SupportTicket = () => {
   const [sortOrder, setSortOrder] = useState(""); // State to track the sorting order
   const [severityFilter, setSeverityFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [assignedToFilter, setAssignedToFilter] = useState("");
+
+  const [typeFilter,setTypeFilter]=useState("")
   const dispatch = useDispatch();
 
   const { loading, error, tickets, pagination } = useSelector(
@@ -29,9 +32,10 @@ const SupportTicket = () => {
         sort: sortOrder,
         severity: severityFilter,
         status: statusFilter,
+        type:typeFilter
       })
     );
-  }, [dispatch, currentPage, sortOrder, severityFilter,statusFilter]);
+  }, [dispatch, currentPage, sortOrder, severityFilter,statusFilter,typeFilter]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -59,6 +63,12 @@ const SupportTicket = () => {
     setStatusFilter(event.target.value);
     setCurrentPage(1);
   }
+
+  const handleTypeChange=(event)=>{
+    setTypeFilter(event.target.value);
+    setCurrentPage(1);
+  }
+
 
   return (
     <div className="table-container">
@@ -98,7 +108,7 @@ const SupportTicket = () => {
                       value={severityFilter}
                       onChange={handleSeverityChange}
                     >
-                      <option value="">All Severities</option>
+                      <option value="">All </option>
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
                       <option value="High">High</option>
@@ -107,6 +117,24 @@ const SupportTicket = () => {
                 </th>
                 <th onClick={toggleSortOrder}>
                   Date Created {renderSortArrow()}
+                </th>
+
+                <th onClick={()=>handleTypeChange("")}>
+                  Type{" "}
+                  <div>
+                    <select
+                      value={typeFilter}
+                      onChange={handleTypeChange}
+                    >
+                      <option value="">All </option>
+                      <option value="ITSG">ITSG</option>
+                      <option value="HR">HR</option>
+                      <option value="HDT">HDT</option>
+                    </select>
+                  </div>
+
+
+
                 </th>
               </tr>
             </thead>
@@ -122,6 +150,8 @@ const SupportTicket = () => {
                   <td data-label="Date Created">
                     {new Date(ticket.dateCreated).toLocaleString()}
                   </td>
+
+                  <td data-label="Type">{ticket.type}</td>
                 </tr>
               ))}
             </tbody>

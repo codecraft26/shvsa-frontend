@@ -13,8 +13,9 @@ const CreateTickets = () => {
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [severity, setSeverity] = useState("");
-  const [showToast, setShowToast] = useState(false); // State to control the visibility of the toast
-  const [toastMessage, setToastMessage] = useState(""); // State to set the toast message
+ 
+  const [showToast, setShowToast] = useState(false); 
+  const [toastMessage, setToastMessage] = useState(""); 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -79,14 +80,7 @@ const CreateTickets = () => {
               onChange={(e) => setTopic(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label>Type:</label>
-            <input
-              type="text"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-            />
-          </div>
+         
 
           <div className="form-group">
             <label>Description:</label>
@@ -96,6 +90,19 @@ const CreateTickets = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+          <div className="form-group">
+            <label>Type</label>
+            <select
+             value={type} 
+             onChange={(e)=>setType(e.target.value)}>
+              <option value="">Select Type</option>
+              <option value="ITSG" >ITSG</option>
+              <option value="HR" >HR</option>
+              <option value="HDT" >HDT</option>
+
+            </select>
+          </div>
+
 
           <div className="form-group">
             <label>Severity:</label>
@@ -110,6 +117,7 @@ const CreateTickets = () => {
             </select>
           </div>
 
+         
           <button type="submit">Create</button>
         </form>
         {ticketInfo && <Toast message={toastMessage} type="success" />}
