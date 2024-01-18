@@ -3,10 +3,12 @@
   scroll-behavior: smooth;
 }
 
-body{
+body {
 
-  background-color: #a39898;  ;
+  background-color: #a39898;
+  ;
 }
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -22,6 +24,7 @@ input[type="number"] {
 .greenColor {
   color: green !important;
 }
+
 .redColor {
   color: red !important;
 }

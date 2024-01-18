@@ -1,25 +1,25 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import "./CreateTicket.css"; // Make sure to create this CSS file
-import Loading from "../Loading/Loading";
+import Loading from "../Sharable/Loading/Loading";
 import { createTicket } from "../../redux/action/ticketAction";
 import { useDispatch, useSelector } from "react-redux";
-import Toast from "../Toast/Toast";
+import Toast from "../Sharable/Toast/Toast";
 
-import Dialog from "../Dioluge/Dioluge";
+import Dialog from "../Sharable/Dioluge/Dioluge";
 
 const CreateTickets = () => {
   const [topic, setTopic] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [severity, setSeverity] = useState("");
- 
-  const [showToast, setShowToast] = useState(false); 
-  const [toastMessage, setToastMessage] = useState(""); 
+
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
- 
+
   const ticket = useSelector((state) => state.ticket);
   const { loading, ticketInfo, error } = ticket;
 
@@ -42,11 +42,7 @@ const CreateTickets = () => {
       setDescription("");
       setType("");
       setSeverity("");
-      setTimeout(() =>
-      
-      setIsDialogOpen(false), 4000);
-     
-
+      setTimeout(() => setIsDialogOpen(false), 4000);
     } else if (error) {
       setToastMessage(error);
       setShowToast(false);
@@ -70,9 +66,11 @@ const CreateTickets = () => {
     <div className="container">
       <div className="form-container">
         <form id="contact-form" onSubmit={submitHandler}>
-          {loading &&  <div className="loading-wrapper">
-    <Loading isLoading={loading} />
-  </div>}
+          {loading && (
+            <div className="loading-wrapper">
+              <Loading isLoading={loading} />
+            </div>
+          )}
           <h2>Create Ticket</h2>
           <div className="form-group">
             <label>Name:</label>
@@ -82,7 +80,6 @@ const CreateTickets = () => {
               onChange={(e) => setTopic(e.target.value)}
             />
           </div>
-         
 
           <div className="form-group">
             <label>Description:</label>
@@ -94,17 +91,13 @@ const CreateTickets = () => {
           </div>
           <div className="form-group">
             <label>Type</label>
-            <select
-             value={type} 
-             onChange={(e)=>setType(e.target.value)}>
+            <select value={type} onChange={(e) => setType(e.target.value)}>
               <option value="">Select Type</option>
-              <option value="ITSG" >ITSG</option>
-              <option value="HR" >HR</option>
-              <option value="HDT" >HDT</option>
-
+              <option value="ITSG">ITSG</option>
+              <option value="HR">HR</option>
+              <option value="HDT">HDT</option>
             </select>
           </div>
-
 
           <div className="form-group">
             <label>Severity:</label>
@@ -119,7 +112,6 @@ const CreateTickets = () => {
             </select>
           </div>
 
-         
           <button type="submit">Create</button>
         </form>
         {ticketInfo && <Toast message={toastMessage} type="success" />}

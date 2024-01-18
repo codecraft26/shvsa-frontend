@@ -5,7 +5,7 @@ import { getTickets } from "../../redux/action/ticketAction";
 import { getAgents } from "../../redux/action/agentActions";
 import "./SupportTickerDashBoard.css";
 import ReactPaginate from "react-paginate";
-import Loading from "../Loading/Loading";
+import Loading from "../Sharable/Loading/Loading";
 const SupportTicket = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState(""); // State to track the sorting order
@@ -46,8 +46,8 @@ const SupportTicket = () => {
       }),
       dispatch(getAgents())
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    dispatch,
     currentPage,
     sortOrder,
     severityFilter,

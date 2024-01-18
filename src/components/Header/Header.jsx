@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Header.css"; // Importing the CSS file
 
 const NavBar = () => {
@@ -8,19 +8,19 @@ const NavBar = () => {
     <nav className="navbar">
       <ul className="nav-links">
         <li>
-          <Link to="/" exact activeClassName="active-link">
+          <NavLink to="/" exact activeClassName="active-link">
             DashBoard
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/creation" activeClassName="active-link">
+          <NavLink to="/creation" activeClassName="active-link">
             Agent Creation
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/ticket-entry" activeClassName="active-link">
+          <NavLink to="/ticket-entry" activeClassName="active-link">
             Ticket Creation
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </nav>

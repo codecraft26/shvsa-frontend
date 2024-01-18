@@ -1,9 +1,9 @@
-.container{
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #a39898;
+    background-color: #ffffff;
 }
 
 
@@ -14,7 +14,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
-    
+
 }
 
 form {
@@ -62,11 +62,11 @@ button:hover {
 
 .sortable {
     cursor: pointer;
-    user-select: none; 
-  }
+    user-select: none;
+}
 
 
-  select {
+select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -82,7 +82,7 @@ option {
 }
 
 select {
-    
+
     background-repeat: no-repeat;
     background-position: right 8px top 50%;
     background-size: 12px;
@@ -98,5 +98,5 @@ select:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;  
+    height: 200px;
 }
