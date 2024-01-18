@@ -24,7 +24,7 @@ const SupportTicket = () => {
   const { agents } = useSelector((state) => state.agentList);
 
   const totalPages = Math.ceil(
-    pagination.totalCount / pagination.resultPerPage
+    pagination.filteredCount / pagination.resultPerPage
   );
 
   const isFirstPage = currentPage === 1;
@@ -46,9 +46,15 @@ const SupportTicket = () => {
       }),
       dispatch(getAgents())
     );
-
-   
-  }, [dispatch, currentPage, sortOrder, severityFilter, statusFilter, typeFilter, agentFilter, ]);
+  }, [
+    dispatch,
+    currentPage,
+    sortOrder,
+    severityFilter,
+    statusFilter,
+    typeFilter,
+    agentFilter,
+  ]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -81,11 +87,11 @@ const SupportTicket = () => {
     setTypeFilter(event.target.value);
     setCurrentPage(1);
   };
-  const handleAssignedchange=(event)=>{
-    setAgentFilter(event.target.value);
-    setCurrentPage(1);
-  }
-
+  const handleAssignedchange = (event) => {
+    const value = event.target.value;
+    setAgentFilter(value); // Clear filter if "All" is selected
+    setCurrentPage(1); // Reset to the first page when the filter changes
+  };
 
   return (
     <div className="table-container">
@@ -93,8 +99,6 @@ const SupportTicket = () => {
         <div className="loading-container">
           <Loading isLoading={loading} />
         </div>
-      ) : error ? (
-        <div>Error: {error}</div>
       ) : (
         <div>
           <table>
@@ -104,12 +108,9 @@ const SupportTicket = () => {
                 <th>Topic</th>
                 <th>Description</th>
                 <th onClick={handleAssignedchange}>
-                  Assigned 
+                  Assigned
                   <div>
-                    <select
-                      value={agentFilter}
-                      onChange={handleAssignedchange}
-                    >
+                    <select value={agentFilter} onChange={handleAssignedchange}>
                       <option value="">All</option>
                       {agentNames.map((agent, index) => (
                         <option key={index} value={agent}>
@@ -145,7 +146,7 @@ const SupportTicket = () => {
                   </div>
                 </th>
                 <th onClick={toggleSortOrder}>
-                  Date Created {renderSortArrow()}
+                  Date Created ↑{renderSortArrow()}
                 </th>
 
                 <th onClick={() => handleTypeChange("")}>
@@ -179,6 +180,13 @@ const SupportTicket = () => {
               ))}
             </tbody>
           </table>
+
+          {error ? (
+            <div className="error-message">Error: {error}</div>
+          ) : tickets.length === 0 ? (
+            <div>No tickets available for the selected filters.</div>
+          ) : null}
+
           <ReactPaginate
             previousLabel={"previous"}
             nextLabel={"next"}
