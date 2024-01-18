@@ -1,9 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import SupportAgent from "./components/SupportAgentCreation/SupportAgent";
-
 import CreateTickets from "./components/Ticket/CreateTicket";
-import SupportTicketDashBoard from "./components/Ticket/SupportTickerDashBoard"
+import SupportTicketDashBoard from "./components/Ticket/SupportTickerDashBoard";
 const App = () => {
   return (
     <>

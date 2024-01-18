@@ -27,4 +27,17 @@
   .nav-links .active-link {
     color: #04AA6D;
   }
+
+  .nav-links .active-link::after {
+    content: '';
+    display: block;
+    margin: auto;
+    height: 3px;
+    width: 0px;
+    background: #04AA6D;
+    transition: width 0.5s;
+  }
   
+  .nav-links .active-link:hover::after {
+    width: 100%;
+  }

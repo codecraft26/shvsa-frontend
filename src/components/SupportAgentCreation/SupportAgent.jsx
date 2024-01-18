@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
 import { createAgent } from "../../redux/action/agentActions";
-import "./supportAgent.css"; // Make sure to create this CSS file
+import "./supportAgent.css";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../Loading/Loading";
-import Toast from "../Toast/Toast";
+import Loading from "../Sharable/Loading/Loading";
+import Toast from "../Sharable/Toast/Toast";
 
-import Dialog from "../Dioluge/Dioluge";
+import Dialog from "../Sharable/Dioluge/Dioluge";
 const SupportAgent = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -63,9 +63,11 @@ const SupportAgent = () => {
     <div className="container">
       <div className="form-container">
         <form id="contact-form" onSubmit={submitHandler}>
-        {loading &&  <div className="loading-wrapper">
-    <Loading isLoading={loading} />
-  </div>}
+          {loading && (
+            <div className="loading-wrapper">
+              <Loading isLoading={loading} />
+            </div>
+          )}
           <h2>Create Support Agent</h2>
           <div className="form-group">
             <label>Name:</label>
