@@ -1,23 +1,72 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTickets } from '../../redux/action/ticketAction'
-import './SupportTickerDashBoard.css'
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getTickets } from "../../redux/action/ticketAction";
+import "./SupportTickerDashBoard.css";
+import ReactPaginate from "react-paginate";
+import Loading from "../Loading/Loading";
 const SupportTicket = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState(""); // State to track the sorting order
+  const [severityFilter, setSeverityFilter] = useState("");
+
   const dispatch = useDispatch();
-  const ticketList = useSelector(state => state.ticketList);
-  const { loading, error, tickets } = ticketList;
+
+  const { loading, error, tickets, pagination } = useSelector(
+    (state) => state.ticketList
+  );
+  const totalPages = Math.ceil(
+    pagination.totalCount / pagination.resultPerPage
+  );
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   useEffect(() => {
-    dispatch(getTickets());
-  }, [dispatch]);
+    dispatch(
+      getTickets({
+        page: currentPage,
+        sort: sortOrder,
+        severity: severityFilter,
+      })
+    );
+  }, [dispatch, currentPage, sortOrder, severityFilter]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const toggleSortOrder = () => {
+    // Toggle between 'dateCreated' and '-dateCreated'
+    setSortOrder(sortOrder === "dateCreated" ? "-dateCreated" : "dateCreated");
+  };
+  const renderSortArrow = () => {
+    if (sortOrder === "dateCreated") {
+      return "↑"; // Up arrow for ascending
+    } else if (sortOrder === "-dateCreated") {
+      return "↓"; // Down arrow for descending
+    }
+    return ""; // No arrow if not sorted
+  };
+
+  const handleSeverityChange = (event) => {
+    setSeverityFilter(event.target.value);
+    setCurrentPage(1); // Reset to the first page when the filter changes
+  };
 
   return (
     <div className="table-container">
+     
+
       {loading ? (
-        <div>Loading...</div>
+     <div className="loading-container">
+     <Loading isLoading={loading} />
+   </div>
       ) : error ? (
         <div>Error: {error}</div>
       ) : (
+
+        <div>
         <table>
           <thead>
             <tr>
@@ -25,27 +74,57 @@ const SupportTicket = () => {
               <th>Topic</th>
               <th>Description</th>
               <th>Assigned To</th>
-              <th>Severity</th>
-              <th>Date Created</th>
+              <th>Status</th>
+              <th onClick={() => handleSeverityChange("")}>Severity <div>
+        <select value={severityFilter} onChange={handleSeverityChange}>
+          <option value="">All Severities</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div></th>
+              <th onClick={toggleSortOrder}>
+                Date Created {renderSortArrow()}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {tickets.map(ticket => (
+            {tickets.map((ticket) => (
               <tr key={ticket._id}>
                 <td data-label="ID">{ticket._id}</td>
                 <td data-label="Topic">{ticket.topic}</td>
                 <td data-label="Description">{ticket.description}</td>
                 <td data-label="Assigned To">{ticket.assignedTo}</td>
+                <td data-label="Status">{ticket.status}</td>
                 <td data-label="Severity">{ticket.severity}</td>
-                <td data-label="Date Created">{new Date(ticket.dateCreated).toLocaleString()}</td>
+                <td data-label="Date Created">
+                  {new Date(ticket.dateCreated).toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <ReactPaginate
+  previousLabel={"previous"}
+  nextLabel={"next"}
+  breakLabel={"..."}
+  pageCount={totalPages}
+  marginPagesDisplayed={2}
+  pageRangeDisplayed={5}
+  onPageChange={(data) => handlePageChange(data.selected + 1)}
+  containerClassName={"pagination"}
+  activeClassName={"active"}
+  previousClassName={isFirstPage ? "hide" : ""}
+  nextClassName={isLastPage ? "hide" : ""}
+  forcePage={currentPage - 1} // Subtract 1 because ReactPaginate is zero-based
+/>
+        </div>
       )}
-    </div>
-  )
 
+     
+    
+    </div>
+  );
 };
 
 export default SupportTicket;

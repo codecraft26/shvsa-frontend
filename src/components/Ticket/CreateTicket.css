@@ -59,3 +59,9 @@ button {
 button:hover {
     background-color: #004494;
 }
+
+.sortable {
+    cursor: pointer;
+    user-select: none; /* This will prevent the text from being selectable */
+  }
+  
