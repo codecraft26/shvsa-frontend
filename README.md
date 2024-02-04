@@ -42,6 +42,7 @@ npm install
 ```bash
 npm run dev 
 ```
+
 ### Step 5: Open Your Web Browser
 Navigate to http://localhost:5174 or whatever URL your app runs on.
 
@@ -59,4 +60,4 @@ Navigate to http://localhost:5174 or whatever URL your app runs on.
 - Filter fields - Status, AssignedTo, Severity, Type
 - Sort fields - resolvedOn, dateCreated
 
-
+open to Raise a PR
